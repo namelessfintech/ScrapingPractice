@@ -10,7 +10,7 @@ def fetcher(url):
     html = response.text.strip()
     return html
 
-def proccessor(html):
+def weather_proccessor(html):
     soup = bs(html,'html.parser')
     title = soup.title.text
     city = soup.h2.text.strip()
@@ -27,8 +27,29 @@ def proccessor(html):
     # print(soup.title.parent.name) returns the name of the parent element
     return (title, city, forecast, barometer, forecast_text)
 
+def sec_proccessor(html):
+    soup = bs(html, 'html.parser')
+    table = soup.find('table',attrs={"class" : "tableFile2"})
+    content = []
+    for row in table.findAll("tr"):
+        cells = row.findAll("td")
+        cells = [ele.text.strip() for ele in cells]
+    for row in table.findAll("a"):
+        href = row.get("href")
+        content.append(href)
+    return content
+
+def find_page(content):
+    uri = "https://www.sec.gov"
+    link = ""
+    url = "{}".format(uri)
+
+
+# calls below
 url = "https://forecast.weather.gov/MapClick.php?lat=40.6925&lon=-73.9904#.XAmGmRNKgWo"
+weather_data = fetcher(url)
+weather_proccessor(weather_data)
 
-data = fetcher(url)
-
-print(proccessor(data))
+url = "http://www.sec.gov/cgi-bin/browse-edgar?CIK=grpn&Find=Search&owner=exclude&action=getcompany"
+sec_data = fetcher(url)
+print(sec_proccessor(sec_data))
