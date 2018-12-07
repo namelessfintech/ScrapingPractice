@@ -50,10 +50,6 @@ def find_pageLink(content, target):
     return url
 
 # calls below
-url = "https://forecast.weather.gov/MapClick.php?lat=40.6925&lon=-73.9904#.XAmGmRNKgWo"
-weather_data = fetcher(url)
-weather_proccessor(weather_data)
-
 url = "http://www.sec.gov/cgi-bin/browse-edgar?CIK=grpn&Find=Search&owner=exclude&action=getcompany"
 sec_data = fetcher(url)
 content = sec_proccessor(sec_data)
